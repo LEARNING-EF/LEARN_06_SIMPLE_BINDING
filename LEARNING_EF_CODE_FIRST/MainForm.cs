@@ -87,10 +87,11 @@ namespace LEARNING_EF_CODE_FIRST
 
 				//	databaseContext.Users.Add(newUser);
 
+				//	// Note: Not Transactional!
 				//	//databaseContext.SaveChanges();
 				//}
 
-				// Note: Transaction!
+				// Note: Transactional!
 				//databaseContext.SaveChanges();
 				// **************************************************
 
@@ -104,9 +105,9 @@ namespace LEARNING_EF_CODE_FIRST
 					};
 
 					databaseContext.Users.Add(newUser);
-
-					databaseContext.SaveChanges();
 				}
+
+				databaseContext.SaveChanges();
 				// **************************************************
 
 				generateTestDataButton.Enabled = false;
