@@ -11,44 +11,44 @@ namespace LEARNING_EF_CODE_FIRST
 
 		private void MainForm_Load(object sender, System.EventArgs e)
 		{
-			Models.DatabaseContext oDatabaseContext = null;
+			Models.DatabaseContext databaseContext = null;
 
 			try
 			{
-				oDatabaseContext =
+				databaseContext =
 					new Models.DatabaseContext();
 
 				// Solution (1)
-				//var varUsers =
-				//	oDatabaseContext.Users
+				//var users =
+				//	databaseContext.Users
 				//	.ToList()
 				//	;
 
-				//if (varUsers.Count != 0)
+				//if (users.Count != 0)
 				//{
 				//	generateTestDataButton.Enabled = false;
 				//}
 				// /Solution (1)
 
 				// Solution (2)
-				//int intUserCount =
-				//	oDatabaseContext.Users
+				//int userCount =
+				//	databaseContext.Users
 				//	.Count()
 				//	;
 
-				//if (intUserCount != 0)
+				//if (userCount != 0)
 				//{
 				//	generateTestDataButton.Enabled = false;
 				//}
 				// /Solution (2)
 
 				// Solution (3)
-				bool blnHasAny =
-					oDatabaseContext.Users
+				bool hasAny =
+					databaseContext.Users
 					.Any()
 					;
 
-				if (blnHasAny)
+				if (hasAny)
 				{
 					generateTestDataButton.Enabled = false;
 				}
@@ -60,15 +60,15 @@ namespace LEARNING_EF_CODE_FIRST
 			}
 			finally
 			{
-				if (oDatabaseContext != null)
+				if (databaseContext != null)
 				{
-					oDatabaseContext.Dispose();
-					oDatabaseContext = null;
+					databaseContext.Dispose();
+					databaseContext = null;
 				}
 			}
 		}
 
-		private void generateTestDataButton_Click(object sender, System.EventArgs e)
+		private void GenerateTestDataButton_Click(object sender, System.EventArgs e)
 		{
 			Models.DatabaseContext databaseContext = null;
 
@@ -78,35 +78,35 @@ namespace LEARNING_EF_CODE_FIRST
 					new Models.DatabaseContext();
 
 				// **************************************************
-				for (int index = 1; index <= 100; index++)
-				{
-					Models.User newUser = new Models.User();
-
-					newUser.Password = "1234512345";
-					newUser.Username = $"Username_{ index }";
-					newUser.FullName = $"Full Name { index }";
-					newUser.EmailAddress = $"User_{ index }@GMail.com";
-
-					databaseContext.Users.Add(newUser);
-				}
-
-				databaseContext.SaveChanges();
-				// **************************************************
-
-				// **************************************************
 				//for (int index = 1; index <= 100; index++)
 				//{
 				//	Models.User newUser = new Models.User();
 
-				//	newUser.Password = "1234512345";
 				//	newUser.Username = $"Username_{ index }";
 				//	newUser.FullName = $"Full Name { index }";
-				//	newUser.EmailAddress = $"User_{ index }@GMail.com";
 
 				//	databaseContext.Users.Add(newUser);
 
-				//	databaseContext.SaveChanges();
+				//	//databaseContext.SaveChanges();
 				//}
+
+				// Note: Transaction!
+				//databaseContext.SaveChanges();
+				// **************************************************
+
+				// **************************************************
+				for (int index = 1; index <= 100; index++)
+				{
+					Models.User newUser = new Models.User
+					{
+						Username = $"Username_{ index }",
+						FullName = $"Full Name { index }",
+					};
+
+					databaseContext.Users.Add(newUser);
+
+					databaseContext.SaveChanges();
+				}
 				// **************************************************
 
 				generateTestDataButton.Enabled = false;
@@ -127,7 +127,7 @@ namespace LEARNING_EF_CODE_FIRST
 			}
 		}
 
-		private void displayDataButton_Click(object sender, System.EventArgs e)
+		private void DisplayDataButton_Click(object sender, System.EventArgs e)
 		{
 			Models.DatabaseContext databaseContext = null;
 
@@ -136,7 +136,22 @@ namespace LEARNING_EF_CODE_FIRST
 				databaseContext =
 					new Models.DatabaseContext();
 
-				// Solution (1)
+				// Solution (1) - Unbind
+				//var users =
+				//	databaseContext.Users
+				//	.OrderBy(current => current.FullName)
+				//	.ToList()
+				//	;
+
+				//foreach (var user in users)
+				//{
+				//	string text = user.FullName;
+
+				//	usersListBox.Items.Add(text);
+				//}
+				// /Solution (1) - Unbind
+
+				// Solution (2) - Bind
 				//var users =
 				//	databaseContext.Users
 				//	.OrderBy(current => current.FullName)
@@ -146,9 +161,9 @@ namespace LEARNING_EF_CODE_FIRST
 				//usersListBox.ValueMember = "Id";
 				//usersListBox.DisplayMember = "FullName";
 				//usersListBox.DataSource = users;
-				// /Solution (1)
+				// /Solution (2) - Bind
 
-				// Solution (2)
+				// Solution (3) - Bind
 				//var users; // Compile Error!
 				//var users = null; // Compile Error!
 				System.Collections.Generic.List<Models.User> users = null;
@@ -174,7 +189,7 @@ namespace LEARNING_EF_CODE_FIRST
 				usersListBox.ValueMember = "Id";
 				usersListBox.DisplayMember = "FullName";
 				usersListBox.DataSource = users;
-				// /Solution (2)
+				// /Solution (3) - Bind
 			}
 			catch (System.Exception ex)
 			{
@@ -190,21 +205,21 @@ namespace LEARNING_EF_CODE_FIRST
 			}
 		}
 
-		private void usersListBox_DoubleClick(object sender, System.EventArgs e)
+		private void UsersListBox_DoubleClick(object sender, System.EventArgs e)
 		{
-			Models.User oSelectedUser =
+			Models.User selectedUser =
 				usersListBox.SelectedItem as Models.User;
 
-			if (oSelectedUser != null)
+			if (selectedUser != null)
 			{
 				string strUserInfo =
-					"Full Name: " + oSelectedUser.FullName +
+					"Full Name: " + selectedUser.FullName +
 					System.Environment.NewLine +
-					"Username: " + oSelectedUser.Username +
-					System.Environment.NewLine +
-					"Password: " + oSelectedUser.Password +
-					System.Environment.NewLine +
-					"Email Address: " + oSelectedUser.EmailAddress
+					"Username: " + selectedUser.Username
+					//System.Environment.NewLine +
+					//"Password: " + oSelectedUser.Password +
+					//System.Environment.NewLine +
+					//"Email Address: " + oSelectedUser.EmailAddress
 					;
 
 				System.Windows.Forms.MessageBox.Show(strUserInfo);
