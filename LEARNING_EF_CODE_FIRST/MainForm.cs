@@ -63,7 +63,7 @@ namespace LEARNING_EF_CODE_FIRST
 				if (databaseContext != null)
 				{
 					databaseContext.Dispose();
-					databaseContext = null;
+					//databaseContext = null;
 				}
 			}
 		}
@@ -89,6 +89,18 @@ namespace LEARNING_EF_CODE_FIRST
 
 				//	// Note: Not Transactional!
 				//	//databaseContext.SaveChanges();
+				//}
+				// **************************************************
+
+				// **************************************************
+				//for (int index = 1; index <= 100; index++)
+				//{
+				//	Models.User newUser = new Models.User();
+
+				//	newUser.Username = $"Username_{ index }";
+				//	newUser.FullName = $"Full Name { index }";
+
+				//	databaseContext.Users.Add(newUser);
 				//}
 
 				// Note: Transactional!
@@ -123,7 +135,7 @@ namespace LEARNING_EF_CODE_FIRST
 				if (databaseContext != null)
 				{
 					databaseContext.Dispose();
-					databaseContext = null;
+					//databaseContext = null;
 				}
 			}
 		}
@@ -159,8 +171,11 @@ namespace LEARNING_EF_CODE_FIRST
 				//	.ToList()
 				//	;
 
-				//usersListBox.ValueMember = "Id";
-				//usersListBox.DisplayMember = "FullName";
+				////usersListBox.ValueMember = "Id";
+				////usersListBox.DisplayMember = "FullName";
+
+				//usersListBox.ValueMember = nameof(Models.User.Id);
+				//usersListBox.DisplayMember = nameof(Models.User.FullName);
 				//usersListBox.DataSource = users;
 				// /Solution (2) - Bind
 
@@ -187,8 +202,8 @@ namespace LEARNING_EF_CODE_FIRST
 						;
 				}
 
-				usersListBox.ValueMember = "Id";
-				usersListBox.DisplayMember = "FullName";
+				usersListBox.ValueMember = nameof(Models.User.Id);
+				usersListBox.DisplayMember = nameof(Models.User.FullName);
 				usersListBox.DataSource = users;
 				// /Solution (3) - Bind
 			}
@@ -201,29 +216,45 @@ namespace LEARNING_EF_CODE_FIRST
 				if (databaseContext != null)
 				{
 					databaseContext.Dispose();
-					databaseContext = null;
+					//databaseContext = null;
 				}
 			}
 		}
 
 		private void UsersListBox_DoubleClick(object sender, System.EventArgs e)
 		{
-			Models.User selectedUser =
-				usersListBox.SelectedItem as Models.User;
+			// روش اول
+			// روش ذیل احمقانه‌ترین روش می‌باشد
+			//Models.User selectedUser = (Models.User)usersListBox.SelectedItem;
 
-			if (selectedUser != null)
+			// روش دوم
+			//if (usersListBox.SelectedItem is Models.User)
+			//{
+			//	Models.User selectedUser =
+			//		(Models.User)usersListBox.SelectedItem;
+			//}
+
+			// روش سوم
+			// روش هوشمندانه
+			//Models.User selectedUser =
+			//	usersListBox.SelectedItem as Models.User;
+
+			//if (selectedUser != null)
+			//{
+			//	string message =
+			//		$"Full Name { selectedUser.FullName }\r\nUsername: { selectedUser.Username }";
+
+			//	System.Windows.Forms.MessageBox.Show(message);
+			//}
+
+			// روش چهارم
+			// روش هوشمندانه و مدرن
+			if(usersListBox.SelectedItem is Models.User selectedUser)
 			{
-				string strUserInfo =
-					"Full Name: " + selectedUser.FullName +
-					System.Environment.NewLine +
-					"Username: " + selectedUser.Username
-					//System.Environment.NewLine +
-					//"Password: " + oSelectedUser.Password +
-					//System.Environment.NewLine +
-					//"Email Address: " + oSelectedUser.EmailAddress
-					;
+				string message =
+					$"Full Name { selectedUser.FullName }\r\nUsername: { selectedUser.Username }";
 
-				System.Windows.Forms.MessageBox.Show(strUserInfo);
+				System.Windows.Forms.MessageBox.Show(message);
 			}
 		}
 	}
