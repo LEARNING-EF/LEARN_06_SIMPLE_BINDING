@@ -176,6 +176,7 @@ namespace LEARNING_EF_CODE_FIRST
 
 				//usersListBox.ValueMember = nameof(Models.User.Id);
 				//usersListBox.DisplayMember = nameof(Models.User.FullName);
+
 				//usersListBox.DataSource = users;
 				// /Solution (2) - Bind
 
