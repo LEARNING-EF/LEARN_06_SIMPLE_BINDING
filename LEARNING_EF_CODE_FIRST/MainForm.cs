@@ -195,9 +195,16 @@ namespace LEARNING_EF_CODE_FIRST
 				}
 				else
 				{
+					//users =
+					//	databaseContext.Users
+					//	.Where(current => current.FullName.Contains(fullNameTextBox.Text))
+					//	.OrderBy(current => current.FullName)
+					//	.ToList()
+					//	;
+
 					users =
 						databaseContext.Users
-						.Where(current => current.FullName.Contains(fullNameTextBox.Text))
+						.Where(current => current.FullName.ToLower().Contains(fullNameTextBox.Text.ToLower()))
 						.OrderBy(current => current.FullName)
 						.ToList()
 						;
@@ -224,9 +231,17 @@ namespace LEARNING_EF_CODE_FIRST
 
 		private void UsersListBox_DoubleClick(object sender, System.EventArgs e)
 		{
+			if (usersListBox.SelectedItem == null)
+			{
+				System.Windows.Forms.MessageBox.Show("You did not specify any item!");
+
+				return;
+			}
+
 			// روش اول
 			// روش ذیل احمقانه‌ترین روش می‌باشد
-			//Models.User selectedUser = (Models.User)usersListBox.SelectedItem;
+			//Models.User selectedUser =
+			//	(Models.User)usersListBox.SelectedItem;
 
 			// روش دوم
 			//if (usersListBox.SelectedItem is Models.User)
@@ -250,10 +265,13 @@ namespace LEARNING_EF_CODE_FIRST
 
 			// روش چهارم
 			// روش هوشمندانه و مدرن
-			if(usersListBox.SelectedItem is Models.User selectedUser)
+			if (usersListBox.SelectedItem is Models.User selectedUser)
 			{
+				//string message =
+				//	$"Full Name { selectedUser.FullName }\r\nUsername: { selectedUser.Username }";
+
 				string message =
-					$"Full Name { selectedUser.FullName }\r\nUsername: { selectedUser.Username }";
+					$"Full Name { selectedUser.FullName }{ System.Environment.NewLine }Username: { selectedUser.Username }";
 
 				System.Windows.Forms.MessageBox.Show(message);
 			}
