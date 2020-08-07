@@ -45,8 +45,7 @@ namespace LEARNING_EF_CODE_FIRST
 				// Solution (3)
 				bool hasAny =
 					databaseContext.Users
-					.Any()
-					;
+					.Any();
 
 				if (hasAny)
 				{
